@@ -1,38 +1,46 @@
-# Function Hall Booking Management System
+#  Function Hall Booking Management System
 
-A full-stack web application for browsing, booking, and managing function halls. Built with **Python Flask** and **SQLite** as a BCA team project.
+A full-stack web application for browsing, booking, and managing function halls. Developed as a BCA team project using **Python Flask** and **SQLite**, the system streamlines venue reservations and booking management for customers and administrators.
+
 
 ##  Features
 
-###  User Side
-- Register & Login with secure password hashing (bcrypt/pbkdf2)
-- Password reset by email
-- Browse **AC Halls** and **Non-AC Halls** with images and details
-- Check hall availability by date before booking
-- Book a hall with date, purpose, contact info
-- **Payment** via Credit/Debit Card, UPI, or Cash on Delivery
-- View booking history and cancel bookings
-- Submit feedback
+###  User Module
+- User Registration and Login with secure password hashing
+- Password Reset
+- Browse **AC** and **Non-AC** Function Halls
+- View Hall Details, Images, Capacity and Facilities
+- Check Hall Availability Before Booking
+- Book Halls for Events and Functions
+- Multiple Payment Options:
+  - 💳 Credit / Debit Card
+  - 📱 UPI
+  - 💰 Cash on Delivery
+- View Booking History
+- Cancel Bookings
+- Submit Feedback and Reviews
 
-###  Admin Side
-- Secure admin login (separate session)
-- Add new halls (name, location, capacity, type, meal type, image, advance payment)
-- View and delete halls (with registration check protection)
-- View all customer bookings
-- View all payment records
-- Read and delete customer feedback
+###  Admin Module
+- Secure Admin Authentication (separate session)
+- Add New Function Halls with Images
+- Manage Hall Information
+- View and Manage All Customer Bookings
+- Track Payment Records
+- View and Manage Customer Feedback
+- Hall Deletion Protection for Active Registrations
 
 ---
 
 ##  Tech Stack
 
-| Layer | Technology |
-|-------|-----------|
-| Backend | Python 3, Flask |
-| Database | SQLite (5 separate DBs) |
-| Frontend | HTML5, CSS3, JavaScript |
-| Auth | Werkzeug password hashing |
-| File Uploads | Flask + Werkzeug secure_filename |
+| Category        | Technology                |
+|-----------------|---------------------------|
+| Backend         | Python 3, Flask           |
+| Database        | SQLite (5 databases)      |
+| Frontend        | HTML5, CSS3, JavaScript   |
+| Authentication  | Werkzeug Password Hashing |
+| File Handling   | Flask Upload System       |
+| Version Control | Git & GitHub              |
 
 ---
 
@@ -40,17 +48,17 @@ A full-stack web application for browsing, booking, and managing function halls.
 
 ```
 Function_Hall_Booking_Management_System/
-├── app.py                        ← Main Flask application (all routes)
+├── app.py                        ← Main Flask application (all routes & logic)
 ├── requirements.txt              ← Python dependencies
 │
 ├── templates/                    ← Jinja2 HTML templates
-│   ├── base.html                 ← Shared layout (nav, flash messages)
+│   ├── base.html                 ← Shared layout (navbar, flash messages)
 │   ├── index.html                ← Public landing page
-│   ├── login.html                ← User/Admin login
-│   ├── registration.html         ← New user registration
+│   ├── login.html                ← Login page
+│   ├── registration.html         ← User registration
 │   ├── reset_password.html       ← Password reset
 │   ├── dashboard.html            ← User dashboard
-│   ├── homepage.html             ← Hall type selection
+│   ├── homepage.html             ← Browse hall types
 │   ├── acroom.html               ← AC hall listings
 │   ├── nonacroom.html            ← Non-AC hall listings
 │   ├── hallreg.html              ← Hall booking form
@@ -61,15 +69,15 @@ Function_Hall_Booking_Management_System/
 │   ├── mainpage.html             ← Admin dashboard
 │   ├── addhall.html              ← Admin: add hall
 │   ├── hallsdetail.html          ← Admin: manage/delete halls
-│   ├── registered.html           ← Admin: all bookings
+│   ├── registered.html           ← Admin: all customer bookings
 │   ├── reghall.html              ← Admin: registrations list
 │   ├── payments.html             ← Admin: payment records
 │   └── feedbacks.html            ← Admin: customer feedback
 │
 ├── static/
-│   ├── css/style.css             ← All styling
-│   ├── js/main.js                ← Flash message auto-dismiss
-│   └── uploads/                  ← Hall images (auto-created)
+│   ├── css/style.css             ← Stylesheet
+│   ├── js/main.js                ← JavaScript
+│   └── uploads/                  ← Hall images (auto-created on run)
 │
 ├── users.db                      ← User accounts
 ├── halls.db                      ← Hall catalog
@@ -80,177 +88,183 @@ Function_Hall_Booking_Management_System/
 
 ---
 
-##  Setup & Installation
+##  Installation
 
-### Prerequisites
-- Python 3.8 or higher
-- pip
-
-### Step 1 — Clone the Repository
+### 1. Clone Repository
 ```bash
 git clone https://github.com/Sah-p/Function_Hall_Booking_Management_System.git
 cd Function_Hall_Booking_Management_System
 ```
 
-### Step 2 — Create a Virtual Environment
+### 2. Create Virtual Environment
 ```bash
-python -m venv myenv
-
-# Activate on Windows:
-myenv\Scripts\activate
-
-# Activate on Mac/Linux:
-source myenv/bin/activate
+python -m venv venv
 ```
 
-### Step 3 — Install Dependencies
+### 3. Activate Virtual Environment
+
+**Windows:**
+```bash
+venv\Scripts\activate
+```
+
+**Linux / macOS:**
+```bash
+source venv/bin/activate
+```
+
+### 4. Install Dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-### Step 4 — Run the Application
+### 5. Run the Application
 ```bash
 python app.py
 ```
 
-### Step 5 — Open in Browser
+### 6. Open in Browser
 ```
 http://127.0.0.1:5000
 ```
+
+> All 5 SQLite databases are created automatically on first run. No manual setup needed.
 
 ---
 
 ##  Login Credentials
 
-###  Admin Login
-| Field | Value |
-|-------|-------|
+###  Admin
+| Field    | Value          |
+|----------|----------------|
 | Username | `shubha-mastu` |
-| Password | `sm@123` |
-| URL | `http://127.0.0.1:5000/login` |
+| Password | `sm@123`       |
+| URL      | `http://127.0.0.1:5000/login` |
 
-After login, admin is redirected to `/admin` panel.
-
-###  User Login
-Register a new account at:
-```
-http://127.0.0.1:5000/registration
-```
+###  User
+Register a new account at `http://127.0.0.1:5000/registration`
 
 ---
 
 ##  Database Schema
 
-All databases are auto-created on the first run.
+### `users.db`
+| Column   | Type    | Description       |
+|----------|---------|-------------------|
+| id       | INTEGER | Primary key       |
+| username | TEXT    | Unique username   |
+| email    | TEXT    | Unique email      |
+| password | TEXT    | Hashed password   |
 
-### `users.db` — users table
-| Column | Type | Description |
-|--------|------|-------------|
-| id | INTEGER | Primary key |
-| username | TEXT | Unique username |
-| email | TEXT | Unique email |
-| password | TEXT | Hashed password |
+### `halls.db`
+| Column         | Type    | Description              |
+|----------------|---------|--------------------------|
+| id             | INTEGER | Primary key              |
+| hall_name      | TEXT    | Name of the hall         |
+| location       | TEXT    | Address / location       |
+| hall_capacity  | INTEGER | Maximum persons          |
+| hall_type      | TEXT    | `Ac Hall` / `Non-Ac Hall`|
+| meal_type      | TEXT    | Veg / Non-Veg / Both     |
+| hall_image     | TEXT    | Image filename           |
+| advance_payment| INTEGER | Advance amount (₹)       |
 
-### `halls.db` — halls table
-| Column | Type | Description |
-|--------|------|-------------|
-| id | INTEGER | Primary key |
-| hall_name | TEXT | Name of the hall |
-| location | TEXT | Address/location |
-| hall_capacity | INTEGER | Max persons |
-| hall_type | TEXT | `Ac Hall` or `Non-Ac Hall` |
-| meal_type | TEXT | Veg / Non-Veg / Both |
-| hall_image | TEXT | Image filename |
-| advance_payment | INTEGER | Advance amount (₹) |
+### `hall_registrations.db`
+| Column    | Type    | Description        |
+|-----------|---------|--------------------|
+| id        | INTEGER | Primary key        |
+| date      | TEXT    | Booking date       |
+| day       | TEXT    | Day of week        |
+| hall_name | TEXT    | Booked hall        |
+| username  | TEXT    | Booked by          |
+| address   | TEXT    | Customer address   |
+| contact   | TEXT    | Contact number     |
+| purpose   | TEXT    | Event purpose      |
 
-### `hall_registrations.db` — registrations table
-| Column | Type | Description |
-|--------|------|-------------|
-| id | INTEGER | Primary key |
-| date | TEXT | Booking date |
-| day | TEXT | Day of week |
-| hall_name | TEXT | Booked hall |
-| username | TEXT | Booked by |
-| address | TEXT | Customer address |
-| contact | TEXT | Contact number |
-| purpose | TEXT | Event purpose |
+### `payments.db`
+| Column          | Type    | Description            |
+|-----------------|---------|------------------------|
+| id              | INTEGER | Primary key            |
+| name            | TEXT    | Username               |
+| amount          | REAL    | Amount paid (₹)        |
+| payment_method  | TEXT    | Card / UPI / COD       |
+| card_number     | TEXT    | Card number (if card)  |
+| expiration_date | TEXT    | Card expiry            |
+| cvv             | TEXT    | CVV                    |
+| billing_address | TEXT    | Billing address        |
+| upi_id          | TEXT    | UPI ID (if UPI)        |
 
-### `payments.db` — payments table
-| Column | Type | Description |
-|--------|------|-------------|
-| id | INTEGER | Primary key |
-| name | TEXT | Username |
-| amount | REAL | Amount paid (₹) |
-| payment_method | TEXT | Card / UPI / COD |
-| card_number | TEXT | Card number (if card) |
-| expiration_date | TEXT | Expiry (if card) |
-| cvv | TEXT | CVV (if card) |
-| billing_address | TEXT | Billing address |
-| upi_id | TEXT | UPI ID (if UPI) |
-
-### `feedback.db` — feedback table
-| Column | Type | Description |
-|--------|------|-------------|
-| id | INTEGER | Primary key |
-| name | TEXT | Customer name |
-| feedback | TEXT | Feedback message |
+### `feedback.db`
+| Column   | Type    | Description      |
+|----------|---------|------------------|
+| id       | INTEGER | Primary key      |
+| name     | TEXT    | Customer name    |
+| feedback | TEXT    | Feedback message |
 
 ---
 
 ##  Application Routes
 
-### Public
-| Route | Description |
-|-------|-------------|
-| `/` | Landing page |
-| `/login` | Login page |
-| `/registration` | Register new account |
-| `/reset_password` | Reset password |
-| `/logout` | Logout |
+### Public Routes
+| Route             | Description            |
+|-------------------|------------------------|
+| `/`               | Landing page           |
+| `/login`          | Login                  |
+| `/registration`   | Register new account   |
+| `/reset_password` | Reset password         |
+| `/logout`         | Logout                 |
 
-### User (Login Required)
-| Route | Description |
-|-------|-------------|
-| `/dashboard` | User dashboard |
-| `/homepage` | Browse hall types |
-| `/acroom.html` | View AC halls |
-| `/nonacroom.html` | View Non-AC halls |
-| `/hallreg.html` | Book a hall |
-| `/payment` | Make payment |
-| `/history.html` | My bookings |
-| `/feedback.html` | Submit feedback |
-| `/contact.html` | Contact info |
+### User Routes *(Login Required)*
+| Route                            | Description            |
+|----------------------------------|------------------------|
+| `/dashboard`                     | User dashboard         |
+| `/homepage`                      | Browse hall types      |
+| `/acroom.html`                   | AC hall listings       |
+| `/nonacroom.html`                | Non-AC hall listings   |
+| `/hallreg.html`                  | Book a hall            |
+| `/payment`                       | Make payment           |
+| `/history.html`                  | My bookings            |
+| `/cancel-registration/<id>`      | Cancel a booking       |
+| `/feedback.html`                 | Submit feedback        |
+| `/contact.html`                  | Contact info           |
 
-### Admin (Admin Login Required)
-| Route | Description |
-|-------|-------------|
-| `/admin` | Admin dashboard |
-| `/addhall.html` | Add new hall |
-| `/hallsdetail.html` | Manage halls |
-| `/registered.html` | All customer bookings |
-| `/reghall.html` | Hall registrations |
-| `/payments.html` | Payment records |
-| `/feedbacks.html` | Customer feedback |
-
----
-
-##  Screenshots
-
-> Add screenshots of your project here after running it locally.
+### Admin Routes *(Admin Login Required)*
+| Route                            | Description            |
+|----------------------------------|------------------------|
+| `/admin`                         | Admin dashboard        |
+| `/addhall.html`                  | Add new hall           |
+| `/hallsdetail.html`              | Manage/delete halls    |
+| `/registered.html`               | All customer bookings  |
+| `/reghall.html`                  | Registrations list     |
+| `/payments.html`                 | Payment records        |
+| `/feedbacks.html`                | Customer feedback      |
 
 ---
 
-##  Requirements
+##  Future Enhancements
 
-```
-Flask==2.2.3
-Werkzeug==2.2.3
-```
+- Online Payment Gateway Integration (Razorpay / PayU)
+- Email & SMS Notifications on Booking Confirmation
+- Real-Time Availability Updates
+- AI-Based Hall Recommendations
+- Mobile Application Support
+- Booking Analytics Dashboard
+
+---
+
+##  Learning Outcomes
+
+This project provided hands-on experience in:
+- Full-Stack Web Development with Flask
+- Relational Database Management with SQLite
+- User Authentication and Session Management
+- File Upload Handling
+- REST API Design (JSON endpoints)
+- Frontend-Backend Integration
+- Version Control with Git & GitHub
+- Software Project Development as a Team
 
 ---
 
 ##  License
 
-This project is developed as a **BCA Academic Team Project**.
-
----
+This project is developed for **academic and educational purposes** as part of the BCA curriculum.
