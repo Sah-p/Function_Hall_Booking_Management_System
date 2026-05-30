@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Homepage</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 20px 0;
+            border-radius: 20px 20px 0 0;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 36px;
+            letter-spacing: 2px;
+        }
+
+        nav {
+            margin-top: 20px;
+        }
+
+        nav a {
+            display: inline-block;
+            margin: 10px;
+            padding: 12px 24px;
+            color: #007bff;
+            text-decoration: none;
+            background-color: #fff;
+            border: 2px solid #007bff;
+            border-radius: 20px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        nav a:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .welcome-message {
+            margin-top: 30px;
+            font-size: 18px;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .features {
+            margin-top: 40px;
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .feature {
+            width: calc(33.33% - 40px);
+            padding: 20px;
+            background-color: #007bff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .feature:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature h3 {
+            color: #fff;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .feature p {
+            color: #fff;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to Admin</h1>
+    </header>
+    <nav>
+        <a href="addhall.html">Add Hall</a>
+        <a href="payments.html">Payment</a>
+        <a href="feedbacks.html">Feedback</a>
+        <a href="hallsdetail.html">Hall Details</a>
+        <a href="registered.html">Registered Halls</a>
+        <a href="login.html">Logout</a>
+    </nav>
+    <div class="container">
+        <h2>Event Hall Management</h2>
+        <p class="welcome-message">Welcome to the admin portal for managing event halls. Utilize the navigation links above to access various functionalities. Stay updated and make informed decisions to optimize your event management process.</p>
+        <div class="features">
+            <div class="feature">
+                <h3>Add Hall</h3>
+                <p>Add new halls to the system and manage their details.</p>
+            </div>
+            <div class="feature">
+                <h3>Payment</h3>
+                <p>Handle payments and track transaction details.</p>
+            </div>
+            <div class="feature">
+                <h3>Feedback</h3>
+                <p>Review feedback from users and improve services.</p>
+            </div>
+            <div class="feature">
+                <h3>Hall Details</h3>
+                <p>View detailed information about each hall in the system.</p>
+            </div>
+            <div class="feature">
+                <h3>Registered Halls</h3>
+                <p>Track registered halls and their availability.</p>
+            </div>
+            <div class="feature">
+                <h3>Logout</h3>
+                <p>Securely log out from the admin portal.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

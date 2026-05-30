@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Password</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('static/rr.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .reset-container {
+            background-image: url('static/form-background.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+            width: 300px;
+            border: 1px solid black;
+        }
+
+        .reset-container h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .reset-container form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .reset-container label {
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .reset-container input[type="password"] {
+            padding: 10px;
+            margin-bottom: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .reset-container button {
+            padding: 10px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .reset-container button:hover {
+            background-color: #120fd5;
+        }
+
+        .flash-message {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .flash-message p.error {
+            color: red;
+        }
+
+        .flash-message p.success {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <div class="reset-container">
+        <h1>Reset Password</h1>
+
+        <form action="/forgot" method="post">
+            <label for="new_password">New Password:</label>
+            <input type="password" id="new_password" name="new_password" required aria-label="New Password">
+
+            <label for="confirm_password">Confirm Password:</label>
+            <input type="password" id="confirm_password" name="confirm_password" required aria-label="Confirm Password">
+
+            <button type="submit">Reset Password</button>
+        </form>
+
+        <!-- Display Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-message">
+                {% for category, message in messages %}
+                    <p class="{{ category }}">{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% endwith %}
+    </div>
+
+    <script>
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const newPassword = document.getElementById('new_password').value;
+            const confirmPassword = document.getElementById('confirm_password').value;
+            if (newPassword !== confirmPassword) {
+                e.preventDefault();
+                alert('Passwords do not match');
+            }
+        });
+    </script>
+</body>
+</html>

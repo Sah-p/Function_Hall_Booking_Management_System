@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Page</title>
+    <style>
+         body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        form {
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .success-message {
+            display: none;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            border-radius: 4px;
+        }
+        .error-message {
+            display: none;
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Payment Page</h1>
+        <form id="payment-form" action="/payment" method="POST">
+            <label for="name">Name:</label><br>
+            <input type="text" id="name" name="name" required><br>
+            <div id="usernameError" class="error-message">Entered name must match the logged-in username.</div>
+
+            <label for="amount">Amount:</label>
+            <input type="number" step="0.01" id="amount" name="amount" required>
+            
+            <label for="payment_method">Select Payment Method:</label>
+            <select id="payment_method" name="payment_method" required>
+                <option value="">--Select Payment Method--</option>
+                <option value="Credit/Debit Card">Credit/Debit Card</option>
+                <option value="UPI">UPI</option>
+                <option value="Cash on Delivery">Cash on Delivery</option>
+            </select>
+            <br><br>
+            <div id="card_details" style="display:none;">
+                <label for="card_number">Card Number:</label>
+                <input type="number" id="card_number" name="card_number">
+                <br>
+                <label for="expiration_date">Expiration Date:</label>
+                <input type="date" id="expiration_date" name="expiration_date">
+                <br>
+                <label for="cvv">CVV:</label>
+                <input type="number" id="cvv" name="cvv">
+                <br>
+                <label for="billing_address">Billing Address:</label>
+                <input type="text" id="billing_address" name="billing_address">
+                <br>
+            </div>
+            <div id="upi_details" style="display:none;">
+                <label for="upi_id">UPI ID:</label>
+                <input type="text" id="upi_id" name="upi_id">
+                <br>
+            </div>
+            <br>
+            <button type="submit">Proceed to Payment</button>
+            <!-- <input type="hidden" id="session-username" value="{{ username }}"> -->
+            <input type="hidden" id="session-username" value="{{ session['username'] }}">
+
+        </form>
+        <div id="success-message" class="success-message">
+            <p>Payment is successful!</p>
+            <button id="ok-button">OK</button>
+        </div>
+        <div id="error-message" class="error-message"></div>
+    </div>
+    
+    <script>
+      
+        document.getElementById('payment_method').addEventListener('change', function() {
+            var paymentMethod = this.value;
+            if (paymentMethod === 'Credit/Debit Card') {
+                document.getElementById('card_details').style.display = 'block';
+                document.getElementById('upi_details').style.display = 'none';
+            } else if (paymentMethod === 'UPI') {
+                document.getElementById('card_details').style.display = 'none';
+                document.getElementById('upi_details').style.display = 'block';
+            } else {
+                document.getElementById('card_details').style.display = 'none';
+                document.getElementById('upi_details').style.display = 'none';
+            }
+        });
+       
+        function validateUsername() {
+            var usernameInput = document.getElementById('username');
+            var usernameError = document.getElementById('usernameError');
+            var loggedInUsername = "{{ session['username'] }}";
+
+            if (usernameInput.value !== loggedInUsername) {
+                usernameError.textContent = 'Entered name must match the logged-in username.';
+                usernameInput.setCustomValidity('Entered name must match the logged-in username.');
+            } else {
+                usernameError.textContent = '';
+                usernameInput.setCustomValidity('');
+            }
+        }
+            
+        
+        document.getElementById('payment-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the form from submitting normally
+
+           
+
+            var formData = new FormData(this);
+            fetch('/payment', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                var errorMessageDiv = document.getElementById('error-message');
+                var successMessageDiv = document.getElementById('success-message');
+                if (data.success) {
+                    successMessageDiv.style.display = 'block';
+                    successMessageDiv.querySelector('p').textContent = data.message;
+
+                    setTimeout(function() {
+                        window.location.href = data.home_url;
+                    }, 2000); // Redirect after 2 seconds
+                } else {
+                    errorMessageDiv.textContent = data.message;
+                    errorMessageDiv.style.display = 'block';
+                }
+            })
+            .catch(error => {
+                var errorMessageDiv = document.getElementById('error-message');
+                errorMessageDiv.textContent = 'An error occurred. Please try again.';
+                errorMessageDiv.style.display = 'block';
+            });
+        });
+        document.getElementById('username').addEventListener('input', validateUsername);
+
+        document.getElementById('ok-button').addEventListener('click', function() {
+            window.location.href = '/dashboard';
+        });
+    </script> 
+        
+       
+</body>
+</html>

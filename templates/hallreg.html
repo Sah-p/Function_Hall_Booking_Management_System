@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hall Registration</title>
+<style>
+    
+    body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        form {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+        button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Hall Registration</h2>
+        <form id="registrationForm" action="/hall_reg" method="POST" onsubmit="return validateForm()">
+            <label for="date">Date (YYYY-MM-DD):</label><br>
+            <input type="text" id="date" name="date" required oninput="validateDate()"><br>
+            <div id="dateError" class="error-message"></div>
+
+            <label for="day">Day:</label><br>
+            <select id="day" name="day" required onchange="checkRegistration()">
+                <option value="Morning">Morning</option>
+                <option value="Night">Night</option>
+            </select><br><br>
+    
+            <label for="hallName">Hall Name:</label><br>
+            <input type="text" id="hallName" name="hall_name" required oninput="checkRegistration()"><br>
+            <div id="hallError" class="error-message"></div>
+    
+            <label for="username">User Name:</label><br>
+            <input type="text" id="username" name="username" required><br>
+            <div id="usernameError" class="error-message"></div>
+    
+            <label for="address">Address:</label><br>
+            <textarea id="address" name="address" required></textarea><br>
+            <div id="addressError" class="error-message"></div>
+
+            <label for="contact">Contact Number:</label><br>
+            <input type="text" id="contact" name="contact" pattern="[0-9]{10}" required><br>
+    
+            <label for="purpose">Purpose:</label><br>
+            <select id="purpose" name="purpose" required>
+                <option value="Wedding">Wedding</option>
+                <option value="Conference">Conference</option>
+                <option value="Birthday Party">Birthday Party</option>
+                <option value="Concert">Concert</option>
+                <option value="Other">Other</option>
+            </select><br><br>
+    
+            <button type="submit">Make Payment</button><br>
+        </form>
+    </div>
+    <script>
+        function validateDate() {
+            var dateInput = document.getElementById('date');
+            var dateError = document.getElementById('dateError');
+            var enteredDate = new Date(dateInput.value);
+            var currentDate = new Date();
+            currentDate.setHours(0, 0, 0, 0); // Only compare dates, not times
+
+            if (enteredDate < currentDate) {
+                dateError.textContent = 'Please select a date that is not in the past.';
+                dateInput.setCustomValidity('Please select a date that is not in the past.');
+            } else {
+                dateError.textContent = '';
+                dateInput.setCustomValidity('');
+            }
+
+            if (enteredDate.getFullYear() !== 2024) {
+                dateError.textContent = 'Hall registration is allowed only for the year 2024.';
+                dateInput.setCustomValidity('Hall registration is allowed only for the year 2024.');
+            } else if (enteredDate >= currentDate) {
+                dateError.textContent = '';
+                dateInput.setCustomValidity('');
+            }
+        }
+
+        function checkRegistration() {
+    var date = document.getElementById('date').value;
+    var day = document.getElementById('day').value;
+    var hallName = document.getElementById('hallName').value;
+    var hallError = document.getElementById('hallError');
+
+    if (date && day && hallName) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/check_registration', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) {
+                if (xhr.status == 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.exists) {
+                        hallError.textContent = 'A registration already exists for this hall on the selected date and day';
+                        document.getElementById('hallName').setCustomValidity('A registration already exists for this hall on the selected date and day');
+                    } else {
+                        hallError.textContent = '';
+                        document.getElementById('hallName').setCustomValidity('');
+                    }
+                } else {
+                    hallError.textContent = 'Error checking registration. Please try again later.';
+                    document.getElementById('hallName').setCustomValidity('Error checking registration. Please try again later.');
+                }
+            }
+        };
+        xhr.send('date=' + encodeURIComponent(date) + '&day=' + encodeURIComponent(day) + '&hall_name=' + encodeURIComponent(hallName));
+    }
+}
+function validateAddress() {
+            var addressInput = document.getElementById('address');
+            var addressError = document.getElementById('addressError');
+            var address = addressInput.value.trim();
+
+            if (address.length < 10) {
+                addressError.textContent = 'Fill the valid detailed address';
+                addressInput.setCustomValidity('Fill the valid detailed address');
+            } else {
+                addressError.textContent = '';
+                addressInput.setCustomValidity('');
+            }
+        }
+
+        function validateUsername() {
+            var usernameInput = document.getElementById('username');
+            var usernameError = document.getElementById('usernameError');
+            var loggedInUsername = "{{ session['username'] }}";
+
+            if (usernameInput.value !== loggedInUsername) {
+                usernameError.textContent = 'The username provided does not match the logged-in user';
+                usernameInput.setCustomValidity('The username provided does not match the logged-in user');
+            } else {
+                usernameError.textContent = '';
+                usernameInput.setCustomValidity('');
+            }
+        }
+        function validateForm() {
+            validateDate();
+            checkRegistration();
+
+            var dateError = document.getElementById('dateError').textContent;
+            var hallError = document.getElementById('hallError').textContent;
+
+            if (dateError || hallError) {
+                return false;
+            }
+            return true;
+        }
+
+        document.getElementById('address').addEventListener('input', validateAddress);
+        document.getElementById('username').addEventListener('input', validateUsername);
+       
+    </script>
+</body>
+</html>

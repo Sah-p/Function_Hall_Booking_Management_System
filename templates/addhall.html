@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Hall Management</title>
+    <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        width: 80%;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        text-align: center;
+        color:blue;
+    }
+
+    form {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    input[type="file"] {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    input[type="submit"] {
+        background-color: darkblue;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #1e6091;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+        text-align: center;
+    }
+
+    th {
+        background-color: #f0f0f0;
+    }
+
+    tbody tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    img {
+        display: block;
+        margin: 0 auto;
+    }
+
+    /* Style for the message */
+    #message {
+        text-align: center;
+        padding: 20px;
+        margin-top: 20px;
+        background-color: #4CAF50;
+        color: white;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        display: none; /* Hidden by default */
+    }
+    header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 20px 0;
+            border-radius: 20px 20px 0 0;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 36px;
+            letter-spacing: 2px;
+        }
+
+        nav {
+            margin-top: 20px;
+        }
+
+        nav a {
+            display: inline-block;
+            margin: 10px;
+            padding: 12px 24px;
+            color: #007bff;
+            text-decoration: none;
+            background-color: #fff;
+            border: 2px solid #007bff;
+            border-radius: 20px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        nav a:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+        /* Style for flash messages */
+.flashes {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+    text-align: center;
+}
+.flashes li {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+.flashes li.error {
+    background-color: #f44336; /* Red background for errors */
+    color: white;
+}
+.flashes li.success {
+    background-color: #4CAF50; /* Green background for success */
+    color: white;
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to Admin</h1>
+        <nav>
+            <a href="payments.html">Payment</a>
+            <a href="feedbacks.html">Feedback</a>
+            <a href="hallsdetail.html">Hall Details</a>
+            <a href="registered.html">Registered halls</a>
+            <a href="login.html">Logout</a>
+        </nav>
+    </header>
+    <div class="container">
+        <h2>Admin Hall Management</h2>
+       
+        <!-- Form to add a new hall -->
+        <form id="hall-form" action="/add_hall" method="POST" enctype="multipart/form-data">
+            <h2>Add New Hall</h2>
+            
+            <label for="hall_name">Hall Name:</label>
+            <input type="text" id="hall_name" name="hall_name" required>
+
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location" required>
+
+            <label for="hall_capacity">Capacity:</label>
+            <input type="number" id="hall_capacity" name="hall_capacity" required>
+
+            <label for="hall_type">Hall Type:</label>
+            <select id="hall_type" name="hall_type" required>
+                <option value="Ac Hall">Ac Hall</option>
+                <option value="Non-Ac Hall">Non-Ac Hall</option>
+            </select>
+
+            <label for="meal_type">Meal Type:</label>
+            <select id="meal_type" name="meal_type" required>
+                <option value="veg">Veg</option>
+                <option value="nonveg">Non-Veg</option>
+                <option value="vegandnonveg">Veg and Nonveg</option>
+            </select>
+
+            <label for="hall_image">Hall Image:</label>
+            <input type="file" id="hall_image" name="hall_image" accept="image/*" required>
+
+            <label for="advance_payment">Advance Payment:</label>
+            <input type="number" id="advance_payment" name="advance_payment" required>
+
+            <input type="submit" value="Add Hall">
+        </form>
+
+         <!-- Display flash messages -->
+         {% with messages = get_flashed_messages(with_categories=true) %}
+         {% if messages %}
+           <ul class="flashes">
+             {% for category, message in messages %}
+               <li class="{{ category }}">{{ message }}</li>
+             {% endfor %}
+           </ul>
+         {% endif %}
+       {% endwith %}
+
+        <!-- Success message -->
+        <div id="message">
+            Hall information successfully added!
+        </div>
+    </div>
+
+    <!-- <script>
+    // Show success message when the form is submitted successfully
+    document.getElementById("hall-form").addEventListener("submit", function(event) {
+        // Display the success message
+        document.getElementById("message").style.display = "block";
+        // Prevent the default form submission
+        event.preventDefault();
+    });
+    </script> -->
+</body>
+</html>

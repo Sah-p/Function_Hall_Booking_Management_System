@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Feedback Page</title>
+    <style>
+        /* Basic CSS for styling */
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .feedback-container {
+            max-width: 600px;
+            margin: 20px auto;
+        }
+        .feedback {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            float: right;
+        }
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+        .success-message {
+            color: green;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 10px;
+            display: none;
+        }
+        header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 20px 0;
+            border-radius: 20px 20px 0 0;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 36px;
+            letter-spacing: 2px;
+        }
+
+        nav {
+            margin-top: 20px;
+        }
+
+        nav a {
+            display: inline-block;
+            margin: 10px;
+            padding: 12px 24px;
+            color: #007bff;
+            text-decoration: none;
+            background-color: #fff;
+            border: 2px solid #007bff;
+            border-radius: 20px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        nav a:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to Admin</h1>
+        <nav>
+            <a href="addhall.html">Add Hall</a>
+            <a href="payments.html">Payment</a>
+            <a href="hallsdetail.html">Hall Details</a>
+            <a href="registered.html">Registered halls</a>
+            <a href="login.html">Logout</a>
+        </nav>
+    </header>
+    <div class="feedback-container">
+        <h1>Feedback from Users</h1>
+        <div id="feedback-list"></div>
+        <div id="successMessage" class="success-message" style="display: none;">Feedback deleted successfully</div>
+    </div>
+
+    <script>
+        // Function to fetch feedback data from the backend
+        async function fetchFeedback() {
+            try {
+                const response = await fetch('/get_feedback'); // Replace with your backend endpoint
+                const feedbackData = await response.json();
+                displayFeedback(feedbackData);
+            } catch (error) {
+                console.error('Error fetching feedback:', error);
+            }
+        }
+
+        // Function to display feedback on the admin page
+        function displayFeedback(feedbackData) {
+            const feedbackList = document.getElementById('feedback-list');
+            feedbackList.innerHTML = ''; // Clear previous feedback
+
+            feedbackData.forEach(feedback => {
+                const feedbackElement = document.createElement('div');
+                feedbackElement.classList.add('feedback');
+                feedbackElement.innerHTML = `
+                    <strong>Name:</strong> ${feedback.name}<br>
+                    <strong>Message:</strong> ${feedback.feedback} <!-- Changed from feedback.message to feedback.feedback -->
+                    <button class="delete-btn" onclick="deleteFeedback(${feedback.id})">Delete</button>
+                `;
+                feedbackList.appendChild(feedbackElement);
+            });
+        }
+
+        // Function to delete feedback
+        async function deleteFeedback(id) {
+            try {
+                const response = await fetch(`/delete_feedback/${id}`, { method: 'DELETE' }); // Replace with your backend endpoint
+                if (response.ok) {
+                    // Remove the deleted feedback from the UI
+                    document.getElementById(`feedback-${id}`).remove();
+                    // Show success message
+                    document.getElementById('successMessage').innerText = 'Feedback deleted successfully.';
+                    document.getElementById('successMessage').style.display = 'block';
+                    // Hide success message after 3 seconds
+                    setTimeout(() => {
+                        document.getElementById('successMessage').style.display = 'none';
+                    }, 3000);
+                } else {
+                    console.error('Failed to delete feedback');
+                }
+            } catch (error) {
+                console.error('Error deleting feedback:', error);
+            }
+        }
+
+        // Call the function to fetch feedback when the page loads
+        window.onload = fetchFeedback;
+    </script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home Page</title>
+    <style>
+    body
+    {
+    background-image: url('static/hall.jpg');     
+    background-repeat: no-repeat;
+    background-size: 700px;
+    background-position: left top;
+    margin: 0;
+    padding: 0;
+    }
+	tr,th
+	{
+	height:500px;
+	width:500px;
+    }
+    </style>
+</head>
+<body >
+    <h1 style="font-family:times-new-roman; color:darkblue; background-color:lightgrey; font-size:40px; margin-left:700px; "><center>Event Management </center></h1>
+    <center>
+        <table border="0" height="350px" width="750px" style="margin-left: 600px;" >
+            <tr>
+                <th>	
+                    <a href="acroom.html"><button type="button" style="color:darkblue;"> <img src="{{ url_for('static', filename='acroom.png') }}" alt="AC Room Image" height ="90" width="200" ><b>AC Rooms</b></button></a>
+                </th>
+
+                <td>
+                    <a href="nonacroom.html"><button type="button" value="Stationary Items" style="color:darkblue;"><img src="{{ url_for('static', filename='nonacroom.png') }}" alt="Non-AC Room Image" height ="80" width="200" ><b>Non-AC Rooms</b></button></a>
+                </td>
+            </tr>
+        </table>
+        <br>
+    </center>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration History</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+.container h2 {
+    margin-bottom: 10px;
+}
+
+.registration-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.registration-list li {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+}
+
+.registration-info p {
+    margin: 5px 0;
+}
+
+.cancel-form {
+    display: inline;
+}
+
+.cancel-button {
+    background-color: #d9534f;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.cancel-button:hover {
+    background-color: #c9302c;
+}
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Registration History</h1>
+    </header>
+    <div class="container">
+        <h2>Your Registered Halls</h2>
+        {% if registrations %}
+            <ul>
+            {% for registration in registrations %}
+                <li>
+                    <div class="registration-info">
+                        <p><strong>Date:</strong> {{ registration[1] }}</p>
+                        <p><strong>Day:</strong> {{ registration[2] }}</p>
+                        <p><strong>Hall Name:</strong> {{ registration[3] }}</p>
+                    </div>
+                    <form action="{{ url_for('cancel_registration', registration_id=registration[0]) }}" method="post" class="cancel-form">
+                        <button type="submit" class="cancel-button">Cancel Registration</button>
+                    </form>
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No registrations found.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

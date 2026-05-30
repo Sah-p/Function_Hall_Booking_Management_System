@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+        body {
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        header {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 36px;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            letter-spacing: 2px;
+        }
+
+        .navigation {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .navigation a {
+            text-decoration: none;
+            color: #555;
+            font-size: 16px;
+            margin: 0 20px;
+            transition: color 0.3s ease;
+        }
+
+        .navigation a:hover {
+            color: #333;
+        }
+
+        .button {
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: #ff4d4d;
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #ff6666;
+        }
+
+        .button:focus {
+            outline: none;
+        }
+
+        .highlight {
+            color: #ff4d4d;
+            font-weight: 600;
+        }
+
+        .highlight:hover {
+            text-decoration: underline;
+        }
+
+      
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Welcome to <span class="highlight">Shubha-Mastu</span></h1>
+            <div class="navigation">
+                <a href="feedback.html">Feedback</a>
+                <a href="reghall.html">Registered Details</a>
+                <a href="history.html">Registered Hall</a>
+                <a href="login.html">Logout</a>
+            </div>
+        </header>
+        <a href="/homepage" class="button">Book Your Event Now</a>
+    </div>
+</body>
+</html>

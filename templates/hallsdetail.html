@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halls Management</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 20px 0;
+            border-radius: 20px 20px 0 0;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 36px;
+            letter-spacing: 2px;
+        }
+
+        nav {
+            margin-top: 20px;
+        }
+
+        nav a {
+            display: inline-block;
+            margin: 10px;
+            padding: 12px 24px;
+            color: #007bff;
+            text-decoration: none;
+            background-color: #fff;
+            border: 2px solid #007bff;
+            border-radius: 20px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        nav a:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+        form {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        form label {
+            font-size: 18px;
+            margin-right: 10px;
+        }
+        form select, form button {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        form button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        form button:hover {
+            background-color: #0056b3;
+        }
+        .halls-list {
+            margin-top: 20px;
+        }
+        .hall-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .hall-item span {
+            font-size: 18px;
+            color: #555;
+        }
+        .hall-item button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: background-color 0.3s;
+        }
+        .hall-item button:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to Admin</h1>
+        <nav>
+            <a href="addhall.html">Add Hall</a>
+            <a href="payments.html">Payment</a>
+            <a href="feedbacks.html">Feedback</a>
+            <a href="registered.html">Registered halls</a>
+            <a href="login.html">Logout</a>
+        </nav>
+    </header>
+    <div class="container">
+        <h1>Halls Management</h1>
+
+        <!-- Form to fetch halls based on type -->
+        <form id="fetchHallsForm">
+            <label for="hall_type">Select Hall Type:</label>
+            <select id="hall_type" name="hall_type">
+                <option value="Ac Hall">AC Hall</option>
+                <option value="Non-Ac Hall">Non-AC Hall</option>
+            </select>
+            <button type="submit">Fetch Halls</button>
+        </form>
+
+        <!-- Container to display the list of halls -->
+        <div id="hallsList" class="halls-list"></div>
+    </div>
+
+    <script>
+        document.getElementById('fetchHallsForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const hallType = document.getElementById('hall_type').value;
+            
+            fetch('/hallsdetail', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    'hall_type': hallType
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const hallsList = document.getElementById('hallsList');
+                hallsList.innerHTML = '';
+
+                if (data.error) {
+                    hallsList.innerHTML = `<p>${data.error}</p>`;
+                } else {
+                    data.halls.forEach(hall => {
+                        const hallItem = document.createElement('div');
+                        hallItem.className = 'hall-item';
+                        hallItem.innerHTML = `
+                            <span>${hall.hall_name}</span>
+                            <button onclick="deleteHall('${hall.hall_name}')">Delete</button>
+                        `;
+                        hallsList.appendChild(hallItem);
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+
+        function deleteHall(hallName) {
+            if (confirm(`Are you sure you want to delete the hall: ${hallName}?`)) {
+                fetch('/delete', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({
+                        'hall_name': hallName
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        alert(data.message);
+                        // Reload the halls list
+                        document.getElementById('fetchHallsForm').submit();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+        }
+    </script>
+</body>
+</html>
